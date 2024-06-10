@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: math-deployment
+  namespace: houssemhjaiej
+  labels:
+    app: math-dep
+spec:
+  replicas: {{Values.replicaCount}}
+  selector:
+    matchLabels:
+      app: {{Values.pod.label}}
+  template:
+    metadata:
+      labels:
+        app: {{Values.appName}}
+    spec:
+      containers:
+        - name: {{Values.appName}}
+          image: {{Values.image.name}}
+          imagePullPolicy: {{Values.image.pullPolicy}}
+          ports:
+            - name: http
+              containerPort: {{Values.service.port}}
+              protocol: {{Values.service.protocol}}
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "64Mi"
+              cpu: "250m"
+          volumeMounts:
+            - name: math-persistent-storage
+              mountPath: /tmp/data
+      volumes:
+        - name: math-persistent-storage
+          persistentVolumeClaim:
+            claimName: math-pvc

@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mathapp
+  labels:
+    app: {{Values.appName}}
+  namespace: {{Values.namespace}}
+spec:
+  containers:
+    - name: {{Values.appName}}
+      image: {{Values.image.name}}
+      resources:
+        requests:
+          memory: "64Mi"
+          cpu: "250m"
+        limits:
+          memory: "64Mi"
+          cpu: "250m"
+  ports:
+    - containerPort: {{Values.service.port}}
